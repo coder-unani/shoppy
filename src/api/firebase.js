@@ -7,6 +7,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
+import { getDatabase, ref, child, get } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -18,24 +19,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
+const database = getDatabase(app);
 
-const login = async () => {
-  return signInWithPopup(auth, provider)
-    .then((result) => {
-      const user = result.user;
-      return user;
-    })
-    .catch(console.error);
+const login = () => {
+  signInWithPopup(auth, provider).catch(console.error);
 };
 
-const logout = async () => {
-  return signOut(auth).then(() => null);
+const logout = () => {
+  signOut(auth).catch(console.error);
 };
 
 const onUserStateChange = async (callback) => {
-  onAuthStateChanged(auth, (user) => {
-    callback(user);
+  onAuthStateChanged(auth, async (user) => {
+    const updatedUser = user ? await adminUser(user) : null;
+    callback(updatedUser);
   });
+};
+
+const adminUser = async (user) => {
+  return get(ref(database, "admins")) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const admins = snapshot.val();
+        const isAdmin = admins.includes(user.uid);
+        return { ...user, isAdmin };
+      }
+    });
 };
 
 export { login, logout, onUserStateChange };
