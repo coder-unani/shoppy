@@ -1,4 +1,3 @@
-// 참고 : https://firebase.google.com/docs/auth/web/google-signin?hl=ko
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -7,7 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getDatabase, ref, get, set } from "firebase/database";
+import { getDatabase, ref, get, set, remove } from "firebase/database";
 import { v4 as uuid } from "uuid";
 
 const firebaseConfig = {
@@ -69,4 +68,30 @@ const getProducts = async () => {
     });
 };
 
-export { login, logout, onUserStateChange, addNewProduct, getProducts };
+const addOrUpdateCart = async (userId, product) => {
+  return set(ref(database, `carts/${userId}/${product.id}`), product);
+};
+
+const getCart = async (uid) => {
+  return get(ref(database, `carts/${uid}`)) //
+    .then((snapshot) => {
+      const items = snapshot.val() || {};
+      console.log("items", Object.values(items));
+      return Object.values(items);
+    });
+};
+
+const removeFromCart = async (userId, productId) => {
+  return remove(ref(database, `carts/${userId}/${productId}`));
+};
+
+export {
+  login,
+  logout,
+  onUserStateChange,
+  addNewProduct,
+  getProducts,
+  addOrUpdateCart,
+  getCart,
+  removeFromCart,
+};
