@@ -47,14 +47,18 @@ const adminUser = async (user) => {
     });
 };
 
-const addNewProduct = async (product, image) => {
+const addNewProduct = async (data) => {
+  const { product, url } = data;
   const id = uuid();
   return set(ref(database, `products/${id}`), {
     ...product,
     id,
-    price: parseInt(product.price),
-    image,
-    options: product.options.split(","),
+    price: product.price && parseInt(product.price),
+    image: url,
+    options:
+      product.options && product.options.includes(",")
+        ? product.options.split(",")
+        : product.options,
   });
 };
 
@@ -68,21 +72,24 @@ const getProducts = async () => {
     });
 };
 
-const addOrUpdateCart = async (userId, product) => {
-  return set(ref(database, `carts/${userId}/${product.id}`), product);
+const addOrUpdateCart = async (data) => {
+  const { userId, product } = data;
+  console.log(userId, product);
+  return set(ref(database, `cart_${userId}/${product.id}`), product);
 };
 
 const getCart = async (uid) => {
-  return get(ref(database, `carts/${uid}`)) //
+  return get(ref(database, `cart_${uid}`)) //
     .then((snapshot) => {
       const items = snapshot.val() || {};
-      console.log("items", Object.values(items));
       return Object.values(items);
     });
 };
 
-const removeFromCart = async (userId, productId) => {
-  return remove(ref(database, `carts/${userId}/${productId}`));
+const removeFromCart = async (data) => {
+  const { userId, productId } = data;
+  console.log(userId, productId);
+  return remove(ref(database, `cart_${userId}/${productId}`));
 };
 
 export {

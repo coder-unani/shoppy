@@ -17,7 +17,7 @@ const ProductCard = ({
       <img src={image} className="w-full" alt={title} />
       <div className="mt-2 px-2 text-lg flex justify-between items-center">
         <h3 className="truncate">{title}</h3>
-        <p>{`W${price}`}</p>
+        <p>{`￦${price}`}</p>
       </div>
       <p className="mb-2 px-2 text-gray-600">{category}</p>
     </li>
