@@ -2,7 +2,7 @@
 
 - 프로젝트명: Shoppy
 - 프로젝트 진행: UNANI
-- 프로젝트 작업기간: 2024.03.13
+- 프로젝트 작업기간: 2024.03.12 ~ 2024.03.15
 
 # 프로젝트에 사용된 기술
 
@@ -12,10 +12,10 @@
 - 이미지 : Cloudinary Cloud
 
 - React 관련 라이브러리
-  React-Router-dom
-  React Query
+  ReactRouter
+  ReactQuery
   Context
-  Axios
+  Fetch
 
 - CSS 관련 라이브러리
   Tailwind
