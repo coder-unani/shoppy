@@ -3,16 +3,16 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import AllProducts from "./pages/AllProducts";
 import NewProduct from "./pages/NewProduct";
 import ProductDetail from "./pages/ProductDetail";
 import MyCart from "./pages/MyCart";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 import "./index.css";
-import ProtectedRoute from "./pages/ProtectedRoute";
+import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
